@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Tasks from './components/Tasks';
 import { useState, useEffect } from 'react';
 import AddTask from './components/AddTask';
+import About from './components/About';
+
+
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(true)
@@ -38,7 +43,7 @@ function App() {
     //   id, ...task
     // }
     // setTasks([...tasks, newTask])
-    const res = await fetch('http://localhost:5000/', {
+    const res = await fetch('http://localhost:5000/tasks', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -46,6 +51,7 @@ function App() {
       body: JSON.stringify(task)
     })
     const data = await res.json()
+    console.log(data)
     setTasks([...tasks, data])
   }
   //Delete Task 
@@ -71,13 +77,22 @@ function App() {
     setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task));
   }
   return (
-    <div className="container">
-      {/* <h1>Hello {name}</h1>
+    <Router>
+      <div className="container">
+        {/* <h1>Hello {name}</h1>
       <h2>Hello {x ? 'YES' : 'NO'}</h2> */}
-      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
-      { showAddTask && <AddTask onAdd={addTask} />}
-      {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks To Show'}
-    </div>
+        <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+
+        <Route path='/' exact render={(props) => (
+          <div>
+            {showAddTask && <AddTask onAdd={addTask} />}
+            {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks To Show'}
+          </div>
+        )} />
+        <Route path='/about' component={About} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
