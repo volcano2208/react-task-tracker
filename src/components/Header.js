@@ -8,8 +8,7 @@ const Header = ({ title, onAdd, showAdd }) => {
         <header className="header">
             {/* <h2 style={headingStyle}>{title}</h2> */}
             <h2>{title}</h2>
-            { location.pathname === '/'
-                && (<Button color={showAdd ? 'red' : 'green'} text={showAdd ? 'Close' : 'Add'} onClick={onAdd} />)}
+            { location.pathname === '/' && (<Button color={showAdd ? 'red' : 'green'} text={showAdd ? 'Close' : 'Add'} onClick={onAdd} />)}
             {/* <Button color='blue' text='Hello' />
             <Button color='red' text='Hello' /> */}
         </header>
